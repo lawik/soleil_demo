@@ -1,0 +1,3 @@
+[env]
+MIX_TARGET = "soleil_rpi0_2"
+MIX_ENV = "dev"
