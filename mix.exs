@@ -3,7 +3,7 @@ defmodule SoleilDemo.MixProject do
 
   @app :soleil_demo
   @version "0.1.0"
-  @all_targets [:rpi0_2, :soleil_rpi0_2]
+  @all_targets [:soleil_rpi0_2]
 
   def project do
     [
@@ -45,19 +45,14 @@ defmodule SoleilDemo.MixProject do
       {:nerves_pack, "~> 0.7.1", targets: @all_targets},
       {:circuits_i2c, "~> 2.0", targets: @all_targets},
       {:circuits_gpio, "~> 2.0", targets: @all_targets},
-      {:soleil, path: "../soleil", targets: @all_targets},
+      {:soleil, "~> 0.1.1", targets: @all_targets},
 
       # Dependencies for specific targets
       # NOTE: It's generally low risk and recommended to follow minor version
       # bumps to Nerves systems. Since these include Linux kernel and Erlang
       # version updates, please review their release notes in case
       # changes to your application are needed.
-      {:nerves_system_rpi0_2, "~> 1.28", runtime: false, targets: :rpi0_2},
-      {:soleil_system_rpi0_2,
-       path: "../soleil_system_rpi0_2",
-       runtime: false,
-       targets: :soleil_rpi0_2,
-       nerves: [compile: true]}
+      {:soleil_system_rpi0_2, "~> 1.29.1", runtime: false, targets: :soleil_rpi0_2}
     ]
   end
 
