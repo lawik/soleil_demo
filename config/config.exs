@@ -21,6 +21,17 @@ config :nerves, :firmware, rootfs_overlay: "rootfs_overlay"
 
 config :nerves, source_date_epoch: "1729006937"
 
+config :nerves, :firmware, provisioning: :nerves_hub_link
+
+config :nerves_hub_link,
+  host: "devices.nervescloud.com",
+  configurator: NervesHubLink.Configurator.SharedSecret,
+  remote_iex: true,
+  shared_secret: [
+    product_key: System.fetch_env!("NH_PRODUCT_KEY"),
+    product_secret: System.fetch_env!("NH_PRODUCT_SECRET")
+  ]
+
 if Mix.target() == :host do
   import_config "host.exs"
 else

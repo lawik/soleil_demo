@@ -21,3 +21,5 @@ erl_crash.dump
 
 .DS_Store
 *.db
+
+.mise.local.toml
