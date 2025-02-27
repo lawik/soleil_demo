@@ -24,12 +24,15 @@ config :nerves, source_date_epoch: "1729006937"
 config :nerves, :firmware, provisioning: :nerves_hub_link
 
 config :nerves_hub_link,
+  remote_iex: true,
   host: "devices.nervescloud.com",
   configurator: NervesHubLink.Configurator.SharedSecret,
-  remote_iex: true,
   shared_secret: [
     product_key: System.fetch_env!("NH_PRODUCT_KEY"),
     product_secret: System.fetch_env!("NH_PRODUCT_SECRET")
+  ],
+  health: [
+    metrics: %{"battery_level" => {SoleilDemo, :battery_percentage_metric, []}}
   ]
 
 if Mix.target() == :host do
