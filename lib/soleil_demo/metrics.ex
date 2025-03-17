@@ -9,7 +9,7 @@ defmodule SoleilDemo.Metrics do
 
     metrics =
       battery_info
-      |> Enum.map(fn {k, v} -> {to_string(k), v} end)
+      |> Enum.map(fn {k, v} -> {"Soleil_#{k}", v} end)
       |> Map.new()
 
     Logger.info("recording custom Soleil metrics: #{inspect(metrics)}")
