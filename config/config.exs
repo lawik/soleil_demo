@@ -33,8 +33,8 @@ config :nerves_hub_link,
   ],
   health: [
     metric_sets: [
-      Defaults,
-      SoleilDemo.Metrics
+      :defaults,
+      Soleil.Metrics
     ]
   ]
 

@@ -4,7 +4,7 @@ defmodule SoleilDemo.Metrics do
   require Logger
 
   @impl true
-  def metrics() do
+  def sample() do
     {:ok, battery_info} = Soleil.battery_info()
 
     metrics =
