@@ -32,7 +32,10 @@ config :nerves_hub_link,
     product_secret: System.fetch_env!("NH_PRODUCT_SECRET")
   ],
   health: [
-    metrics: %{"battery_level" => {SoleilDemo, :battery_percentage_metric, []}}
+    metric_sets: [
+      :defaults,
+      Soleil.Metrics
+    ]
   ]
 
 if Mix.target() == :host do

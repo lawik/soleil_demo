@@ -2,7 +2,7 @@ defmodule SoleilDemo.MixProject do
   use Mix.Project
 
   @app :soleil_demo
-  @version "0.1.0"
+  @version "0.1.1"
   @all_targets [:soleil_rpi0_2]
 
   def project do
@@ -45,9 +45,9 @@ defmodule SoleilDemo.MixProject do
       {:nerves_pack, "~> 0.7.1", targets: @all_targets},
       {:circuits_i2c, "~> 2.0", targets: @all_targets},
       {:circuits_gpio, "~> 2.0", targets: @all_targets},
-      {:soleil, "~> 0.1.1", targets: @all_targets},
+      {:soleil, "~> 0.1.2", targets: @all_targets},
       {:nerves_key, "~> 1.2", targets: @all_targets},
-      {:nerves_hub_link, "~> 2.0", targets: @all_targets},
+      {:nerves_hub_link, "~> 2.7", targets: @all_targets},
 
       # Dependencies for specific targets
       # NOTE: It's generally low risk and recommended to follow minor version

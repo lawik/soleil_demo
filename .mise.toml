@@ -1,3 +1,4 @@
 [env]
 MIX_TARGET = "soleil_rpi0_2"
 MIX_ENV = "dev"
+NERVES_HUB_PRODUCT = "soleil_demo"
