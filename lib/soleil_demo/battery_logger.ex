@@ -12,9 +12,14 @@ defmodule SoleilDemo.BatteryLogger do
   end
 
   def run(_arg) do
+    {:ok, pid} = Bme680.start_link()
+    measurement = Bme680.measure(pid)
+
     with :alarm <- Soleil.wakeup_reason(),
          {:ok, battery_info} <- Soleil.battery_info(),
          {:ok, _battery_log} <- BatteryLog.new(battery_info) do
+      env_data = :erlang.term_to_binary(measurement)
+      File.write!("/tmp/env.term", env_data)
       Logger.warning("Logged battery data. Sleeping for #{@sleep_mins} minutes")
 
       case send_nerveshub_report(timeout: 15_000) do
@@ -31,9 +36,22 @@ defmodule SoleilDemo.BatteryLogger do
       :normal
     else
       :manual ->
+        env_data = :erlang.term_to_binary(measurement)
+        File.write!("/tmp/env.term", env_data)
+
         Logger.warning(
           "Wakeup reason was :manual, sleeping after 5 minutes (pid: #{inspect(self())})"
         )
+
+        case send_nerveshub_report(timeout: 15_000) do
+          :ok ->
+            Logger.info(
+              "Sent health report to NervesHub? #{NervesHubLink.Extensions.Health.report_sent?()}"
+            )
+
+          {:error, :timeout} ->
+            Logger.error("Not connected to NervesHub - unable to send report")
+        end
 
         Process.sleep(:timer.minutes(5))
         Soleil.sleep_for(@sleep_mins, :minute)
@@ -51,8 +69,11 @@ defmodule SoleilDemo.BatteryLogger do
     number_of_tries = div(timeout, delay)
 
     case wait_for_nerveshub_extensions(number_of_tries, delay) do
-      :ok -> NervesHubLink.Extensions.Health.send_report()
-      error -> error
+      :ok ->
+        NervesHubLink.Extensions.Health.send_report()
+
+      error ->
+        error
     end
   end
 
@@ -65,5 +86,18 @@ defmodule SoleilDemo.BatteryLogger do
       Process.sleep(delay)
       wait_for_nerveshub_extensions(tries - 1, delay)
     end
+  end
+
+  def environment(value) do
+    Logger.info("Fetching value: #{value}...")
+
+    "/tmp/env.term"
+    |> File.read!()
+    |> :erlang.binary_to_term()
+    |> tap(fn data -> Logger.info("Fetched data: #{inspect(data)}") end)
+    |> Map.get(value)
+  rescue
+    _ ->
+      nil
   end
 end

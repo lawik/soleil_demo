@@ -46,8 +46,9 @@ defmodule SoleilDemo.MixProject do
       {:circuits_i2c, "~> 2.0", targets: @all_targets},
       {:circuits_gpio, "~> 2.0", targets: @all_targets},
       {:soleil, "~> 0.1.2", targets: @all_targets},
+      {:elixir_bme680, "~> 0.1.4", targets: @all_targets},
       {:nerves_key, "~> 1.2", targets: @all_targets},
-      {:nerves_hub_link, "~> 2.7", targets: @all_targets},
+      {:nerves_hub_link, "~> 2.9", targets: @all_targets},
 
       # Dependencies for specific targets
       # NOTE: It's generally low risk and recommended to follow minor version

@@ -32,6 +32,12 @@ config :nerves_hub_link,
     product_secret: System.fetch_env!("NH_PRODUCT_SECRET")
   ],
   health: [
+    metrics: %{
+      env_temp: {SoleilDemo.BatteryLogger, :environment, [:temperature]},
+      env_pressure: {SoleilDemo.BatteryLogger, :environment, [:pressure]},
+      env_humidity: {SoleilDemo.BatteryLogger, :environment, [:humidity]},
+      env_gas_resistance: {SoleilDemo.BatteryLogger, :environment, [:gas_resistance]}
+    },
     metric_sets: [
       :defaults,
       Soleil.Metrics
