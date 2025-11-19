@@ -109,4 +109,23 @@ config :nerves_time, rtc: Soleil.MCP7940
 
 config :soleil_demo, SoleilDemo.Repo, database: "/data/soleil_demo.db"
 
+config :homex,
+  broker: [host: "192.168.2.223", port: 1883],
+  device: [
+    name: {Nerves.Runtime.KV, :get_active, ["nerves_fw_product"]},
+    manufacturer: "Nerves",
+    model: {Nerves.Runtime.KV, :get_active, ["nerves_fw_platform"]},
+    serial_number: {Nerves.Runtime.KV, :get, ["nerves_serial_number"]},
+    sw_version: {Nerves.Runtime.KV, :get_active, ["nerves_fw_version"]},
+    hw_version: {Nerves.Runtime.KV, :get_active, ["nerves_fw_uuid"]}
+  ],
+  entities: [
+    SoleilDemo.HomeAssistant.BatteryStateOfCharge,
+    SoleilDemo.HomeAssistant.BatteryVoltage,
+    SoleilDemo.HomeAssistant.EnvironmentTemperature,
+    SoleilDemo.HomeAssistant.EnvironmentHumidity,
+    SoleilDemo.HomeAssistant.EnvironmentPressure,
+    SoleilDemo.HomeAssistant.EnvironmentGas
+  ]
+
 # import_config "#{Mix.target()}.exs"

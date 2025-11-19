@@ -2,7 +2,7 @@ defmodule SoleilDemo.MixProject do
   use Mix.Project
 
   @app :soleil_demo
-  @version "0.1.2"
+  @version "0.2.0"
   @all_targets [:soleil_rpi0_2]
 
   def project do
@@ -49,6 +49,7 @@ defmodule SoleilDemo.MixProject do
       {:elixir_bme680, "~> 0.1.4", targets: @all_targets},
       {:nerves_key, "~> 1.2", targets: @all_targets},
       {:nerves_hub_link, "~> 2.9", targets: @all_targets},
+      {:homex, github: "kevinschweikert/homex", ref: "472246b5f5b9adce6ca84c29f575f58f91cf5486"},
 
       # Dependencies for specific targets
       # NOTE: It's generally low risk and recommended to follow minor version
