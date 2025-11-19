@@ -110,7 +110,7 @@ config :nerves_time, rtc: Soleil.MCP7940
 config :soleil_demo, SoleilDemo.Repo, database: "/data/soleil_demo.db"
 
 config :homex,
-  broker: [host: "192.168.2.223", port: 1883],
+  broker: [host: "192.168.2.223", port: 1883, username: "nerves", password: "ofsteel"],
   device: [
     name: {Nerves.Runtime.KV, :get_active, ["nerves_fw_product"]},
     manufacturer: "Nerves",
@@ -124,8 +124,7 @@ config :homex,
     SoleilDemo.HomeAssistant.BatteryVoltage,
     SoleilDemo.HomeAssistant.EnvironmentTemperature,
     SoleilDemo.HomeAssistant.EnvironmentHumidity,
-    SoleilDemo.HomeAssistant.EnvironmentPressure,
-    SoleilDemo.HomeAssistant.EnvironmentGas
+    SoleilDemo.HomeAssistant.EnvironmentPressure
   ]
 
 # import_config "#{Mix.target()}.exs"
