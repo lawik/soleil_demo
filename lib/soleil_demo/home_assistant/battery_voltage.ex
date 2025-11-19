@@ -2,7 +2,8 @@ defmodule SoleilDemo.HomeAssistant.BatteryVoltage do
   use Homex.Entity.Sensor,
     name: "battery-voltage",
     unit_of_measurement: "V",
-    device_class: "battery"
+    device_class: "battery",
+    retain: true
 
   def handle_timer(entity) do
     info = Soleil.battery_info()
