@@ -20,6 +20,8 @@ defmodule SoleilDemo.BatteryLogger do
          {:ok, _battery_log} <- BatteryLog.new(battery_info) do
       env_data = :erlang.term_to_binary(measurement)
       File.write!("/tmp/env.term", env_data)
+      battery_data = :erlang.term_to_binary(battery_info)
+      File.write!("/tmp/battery.term", battery_data)
       Logger.warning("Logged battery data. Sleeping for #{@sleep_mins} minutes")
 
       case send_nerveshub_report(timeout: 15_000) do
@@ -99,5 +101,19 @@ defmodule SoleilDemo.BatteryLogger do
   rescue
     _ ->
       nil
+  end
+
+  def battery() do
+    "/tmp/battery.term"
+    |> File.read!()
+    |> :erlang.binary_to_term()
+  rescue
+    _ ->
+      %{
+        state_of_charge: 0,
+        voltage: 0,
+        current: 0,
+        temperature: 0
+      }
   end
 end

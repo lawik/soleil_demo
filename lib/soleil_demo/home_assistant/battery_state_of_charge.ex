@@ -6,7 +6,7 @@ defmodule SoleilDemo.HomeAssistant.BatteryStateOfCharge do
     retain: true
 
   def handle_timer(entity) do
-    info = Soleil.battery_info()
+    info = SoleilDemo.BatteryLogger.battery()
     entity |> set_value(info.state_of_charge)
   end
 end
