@@ -6,7 +6,7 @@ defmodule SoleilDemo.HomeAssistant.EnvironmentPressure do
     retain: true
 
   def handle_timer(entity) do
-    temp = SoleilDemo.BatteryLogger.environment(:pressure)
-    entity |> set_value(temp)
+    %{pressure: value} = SoleilDemo.Environment.latest()
+    entity |> set_value(value)
   end
 end

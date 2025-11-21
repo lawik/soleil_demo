@@ -7,21 +7,7 @@ defmodule SoleilDemo.Application do
 
   @impl true
   def start(_type, _args) do
-    children =
-      [
-        SoleilDemo.Repo,
-        {Ecto.Migrator,
-         repos: Application.fetch_env!(:soleil_demo, :ecto_repos),
-         skip: System.get_env("SKIP_MIGRATIONS") == "true"}
-        # {Task,
-        #  fn ->
-        #    Process.sleep(:timer.minutes(5))
-        #    Soleil.sleep_for(SoleilDemo.Soleil, 15, :minute)
-        #  end}
-        # Children for all targets
-        # Starts a worker by calling: SoleilDemo.Worker.start_link(arg)
-        # {SoleilDemo.Worker, arg},
-      ] ++ children(Nerves.Runtime.mix_target()) ++ [Homex]
+    children = children(Nerves.Runtime.mix_target())
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
@@ -43,8 +29,10 @@ defmodule SoleilDemo.Application do
       # Children for all targets except host
       # Starts a worker by calling: SoleilDemo.Worker.start_link(arg)
       # {SoleilDemo.Worker, arg},
+      SoleilDemo.Environment,
       {Soleil, battery_capacity: 2000, battery_energy: 7400},
-      SoleilDemo.BatteryLogger
+      Homex,
+      SoleilDemo.Final
     ]
   end
 end

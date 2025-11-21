@@ -33,10 +33,10 @@ config :nerves_hub_link,
   ],
   health: [
     metrics: %{
-      env_temp: {SoleilDemo.BatteryLogger, :environment, [:temperature]},
-      env_pressure: {SoleilDemo.BatteryLogger, :environment, [:pressure]},
-      env_humidity: {SoleilDemo.BatteryLogger, :environment, [:humidity]},
-      env_gas_resistance: {SoleilDemo.BatteryLogger, :environment, [:gas_resistance]}
+      env_temp: {SoleilDemo.Final, :environment, [:temperature]},
+      env_pressure: {SoleilDemo.Final, :environment, [:pressure]},
+      env_humidity: {SoleilDemo.Final, :environment, [:humidity]},
+      env_gas_resistance: {SoleilDemo.Final, :environment, [:gas_resistance]}
     },
     metric_sets: [
       :defaults,

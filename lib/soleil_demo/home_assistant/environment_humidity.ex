@@ -6,7 +6,7 @@ defmodule SoleilDemo.HomeAssistant.EnvironmentHumidity do
     retain: true
 
   def handle_timer(entity) do
-    temp = SoleilDemo.BatteryLogger.environment(:humidity)
-    entity |> set_value(temp)
+    %{humidity: value} = SoleilDemo.Environment.latest()
+    entity |> set_value(value)
   end
 end

@@ -5,8 +5,13 @@ defmodule SoleilDemo.HomeAssistant.BatteryStateOfCharge do
     device_class: "battery",
     retain: true
 
-  def handle_timer(entity) do
-    info = SoleilDemo.BatteryLogger.battery()
-    entity |> set_value(info.state_of_charge)
+  def handle_init(entity) do
+    case Soleil.battery_info() do
+      {:ok, info} ->
+        entity |> set_value(info.state_of_charge)
+
+      _ ->
+        entity
+    end
   end
 end
