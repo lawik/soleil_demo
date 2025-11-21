@@ -2,7 +2,7 @@ defmodule SoleilDemo.MixProject do
   use Mix.Project
 
   @app :soleil_demo
-  @version "0.2.5"
+  @version "0.2.6"
   @all_targets [:soleil_rpi0_2]
 
   def project do
