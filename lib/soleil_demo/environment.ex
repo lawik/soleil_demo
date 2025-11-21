@@ -8,7 +8,7 @@ defmodule SoleilDemo.Environment do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  def init(:ok) do
+  def init(_) do
     {:ok, pid} = Bme680.start_link()
     state = %{measurements: [], sensor: pid}
     {:ok, state, {:continue, :initial}}
@@ -51,13 +51,24 @@ defmodule SoleilDemo.Environment do
         add_measurement(acc)
       end)
 
-    avg = Enum.sum(state.measurements) / @measurements
+    avg =
+      [:humidity, :temperature, :pressure]
+      |> Enum.map(fn key ->
+        {key, Enum.sum_by(state.measurements, &Map.get(&1, key)) / Enum.count(state.measurements)}
+      end)
+      |> Map.new()
 
     {:reply, avg, state}
   end
 
   def handle_call(:latest, _from, state) do
-    avg = Enum.sum(state.measurements) / @measurements
+    avg =
+      [:humidity, :temperature, :pressure]
+      |> Enum.map(fn key ->
+        {key, Enum.sum_by(state.measurements, &Map.get(&1, key)) / Enum.count(state.measurements)}
+      end)
+      |> Map.new()
+
     {:reply, avg, state}
   end
 end
