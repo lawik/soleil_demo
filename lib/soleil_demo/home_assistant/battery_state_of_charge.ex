@@ -3,7 +3,7 @@ defmodule SoleilDemo.HomeAssistant.BatteryStateOfCharge do
     name: "battery-state-of-charge",
     unit_of_measurement: "%",
     device_class: "battery",
-    retain: true
+    update_interval: :never
 
   def handle_init(entity) do
     case Soleil.battery_info() do

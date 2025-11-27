@@ -3,7 +3,7 @@ defmodule SoleilDemo.HomeAssistant.BatteryVoltage do
     name: "battery-voltage",
     unit_of_measurement: "V",
     device_class: "voltage",
-    retain: true
+    update_interval: :never
 
   def handle_init(entity) do
     case Soleil.battery_info() do

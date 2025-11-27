@@ -3,39 +3,41 @@ defmodule SoleilDemo.Final do
 
   require Logger
 
-  alias SoleilDemo.BatteryLog
-
-  @attempts 6
-  @wait_time 10_000
-  @sleep_mins 5
+  @sleep_mins 15
+  @short_wake_sec 1 * 60
+  @long_wake_sec 15 * 60
 
   def start_link(arg) do
     Task.start_link(__MODULE__, :run, [arg])
   end
 
   def run(_arg) do
-    Logger.warning("Sleeping for #{@sleep_mins} minutes")
-
     with {:report, :ok} <- {:report, send_nerveshub_report(timeout: 15_000)},
          {:update, :ok} <- {:update, wait_for_update()} do
-      Soleil.sleep_for(@sleep_mins, :minute)
       :ok
     else
       {:report, {:error, :timeout}} ->
         Logger.error("Not connected to NervesHub - unable to send report")
     end
 
-    case Soleil.wakeup_reason() do
-      :alarm ->
-        Process.sleep(:timer.minutes(1))
-        :ok
+    wake_seconds =
+      case Soleil.wakeup_reason() do
+        :alarm ->
+          @short_wake_sec
 
-      :manual ->
-        # When woken, stay up long
-        Process.sleep(:timer.minutes(15))
-        :ok
-    end
+        :manual ->
+          # When woken, stay up long
+          @long_wake_sec
 
+        _ ->
+          # Other
+          @short_wake_sec
+      end
+
+    Logger.info("Staying online for #{wake_seconds} seconds...")
+    Process.sleep(:timer.seconds(wake_seconds))
+
+    Logger.info("Putting to sleep for #{@sleep_mins} minutes.")
     Soleil.sleep_for(@sleep_mins, :minute)
   end
 

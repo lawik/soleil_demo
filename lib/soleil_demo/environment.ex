@@ -3,6 +3,7 @@ defmodule SoleilDemo.Environment do
   require Logger
 
   @measurements 3
+  @interval 10_000
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -11,6 +12,8 @@ defmodule SoleilDemo.Environment do
   def init(_) do
     {:ok, pid} = Bme680.start_link()
     state = %{measurements: [], sensor: pid}
+    # Disable, we can just call it once
+    # :timer.send_interval(@interval, :check)
     {:ok, state, {:continue, :initial}}
   end
 
@@ -33,6 +36,11 @@ defmodule SoleilDemo.Environment do
   end
 
   def handle_continue(:initial, state) do
+    {_, _, state} = handle_call(:careful_measurement, self(), state)
+    {:noreply, state}
+  end
+
+  def handle_info(:check, state) do
     {_, _, state} = handle_call(:careful_measurement, self(), state)
     {:noreply, state}
   end

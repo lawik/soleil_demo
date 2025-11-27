@@ -3,9 +3,9 @@ defmodule SoleilDemo.HomeAssistant.EnvironmentTemperature do
     name: "environment-temperature",
     unit_of_measurement: "°C",
     device_class: "temperature",
-    retain: true
+    update_interval: :never
 
-  def handle_timer(entity) do
+  def handle_init(entity) do
     %{temperature: value} = SoleilDemo.Environment.latest()
     entity |> set_value(value)
   end
